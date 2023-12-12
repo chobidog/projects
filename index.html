@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!--レスポンシブデザイン-->
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <title>Calculator</title>
+  </head>
+  <body>
+    <main>
+      <form id="calcForm">
+        <input type="text" id="inputBox" size="50" placeholder="計算したい内容を入力" />
+        <button type="submit">計算</button>
+      </form>
+    </main>
+    <script>
+      document.getElementById('calcForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var input = document.getElementById('inputBox').value;
+        fetch('/calc', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ expression: input })
+        })
+        .then(response => response.json())
+        .then(result => {
+          console.log('計算結果:', result);
+          // 必要に応じて結果をページ上に表示
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    </script>
+  </body>
+</html>
